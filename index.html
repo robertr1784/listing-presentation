@@ -7,6 +7,581 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #070707;
+      --bg-2: #101010;
+      --ink: #f4efe6;
+      --muted: #9a9286;
+      --line: rgba(244, 239, 230, 0.12);
+      --gold: #c6a46a;
+      --gold-2: #e8d3a2;
+      --card: #121212;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Outfit, sans-serif;
+      font-weight: 300;
+      letter-spacing: 0.01em;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 80;
+      opacity: 0.07;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 40px;
+      mix-blend-mode: difference;
+    }
+    .brand {
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .nav-cta {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+      padding-bottom: 3px;
+    }
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 120px 40px 80px;
+      position: relative;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(7,7,7,0.2) 0%, rgba(7,7,7,0.55) 50%, #070707 100%),
+        url("https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2400&q=80") center/cover no-repeat;
+      filter: saturate(0.7) contrast(1.05);
+    }
+    .hero-inner { position: relative; text-align: center; max-width: 980px; }
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+    }
+    h1 {
+      font-family: "Cormorant Garamond", serif;
+      font-weight: 400;
+      font-size: clamp(56px, 9vw, 128px);
+      line-height: 0.88;
+      letter-spacing: -0.02em;
+    }
+    h1 em { font-style: italic; color: var(--gold-2); }
+    .hero p {
+      margin: 36px auto 0;
+      max-width: 460px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+    .scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      letter-spacing: 0.36em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .scroll-hint::after {
+      content: "";
+      display: block;
+      width: 1px;
+      height: 42px;
+      margin: 12px auto 0;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: drip 1.8s ease-in-out infinite;
+    }
+    @keyframes drip {
+      0%, 100% { transform: scaleY(0.4); opacity: 0.3; }
+      50% { transform: scaleY(1); opacity: 1; }
+    }
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .meta article {
+      padding: 36px 32px;
+      border-right: 1px solid var(--line);
+    }
+    .meta article:last-child { border-right: 0; }
+    .meta span {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .meta strong {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 28px;
+      font-weight: 400;
+    }
+    .timeline-wrap {
+      position: relative;
+      padding: 140px 40px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-head {
+      text-align: center;
+      margin-bottom: 100px;
+    }
+    .section-head h2 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(40px, 6vw, 76px);
+      font-weight: 400;
+      line-height: 0.95;
+    }
+    .spine {
+      position: absolute;
+      left: 50%;
+      top: 280px;
+      bottom: 120px;
+      width: 1px;
+      background: var(--line);
+      transform: translateX(-50%);
+    }
+    .spine-fill {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 0%;
+      background: linear-gradient(to bottom, var(--gold), var(--gold-2));
+    }
+    .steps { position: relative; }
+    .step {
+      display: grid;
+      grid-template-columns: 1fr 72px 1fr;
+      gap: 0 24px;
+      align-items: center;
+      min-height: 420px;
+      margin-bottom: 40px;
+      opacity: 0.28;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .step.on { opacity: 1; transform: none; }
+    .step:nth-child(even) .copy { grid-column: 3; text-align: left; }
+    .step:nth-child(even) .visual { grid-column: 1; grid-row: 1; }
+    .step:nth-child(odd) .copy { grid-column: 1; text-align: right; }
+    .step:nth-child(odd) .visual { grid-column: 3; }
+    .node {
+      grid-column: 2;
+      width: 14px;
+      height: 14px;
+      margin: 0 auto;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      background: var(--bg);
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 0 0 8px var(--bg);
+      transition: background 0.4s, box-shadow 0.4s;
+    }
+    .step.on .node {
+      background: var(--gold);
+      box-shadow: 0 0 0 8px var(--bg), 0 0 24px rgba(198,164,106,0.55);
+    }
+    .copy { padding: 20px 8px; }
+    .num {
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .copy h3 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 400;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .copy p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 15px;
+      max-width: 380px;
+    }
+    .step:nth-child(odd) .copy p { margin-left: auto; }
+    .visual {
+      position: relative;
+      height: 340px;
+      overflow: hidden;
+      border-radius: 2px;
+    }
+    .visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(0.35) contrast(1.05);
+      transform: scale(1.06);
+      transition: transform 1.2s ease, filter 0.6s ease;
+    }
+    .step.on .visual img { transform: scale(1); filter: grayscale(0.1) contrast(1.08); }
+    .visual::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(7,7,7,0.45));
+      pointer-events: none;
+    }
+    .tag {
+      position: absolute;
+      left: 16px;
+      bottom: 16px;
+      z-index: 2;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+    .cta {
+      padding: 160px 40px 120px;
+      text-align: center;
+      position: relative;
+    }
+    .cta h2 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(42px, 7vw, 88px);
+      font-weight: 400;
+      line-height: 0.92;
+    }
+    .cta p {
+      color: var(--muted);
+      margin: 24px auto 40px;
+      max-width: 420px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 16px 36px;
+      border: 1px solid var(--gold);
+      color: var(--gold-2);
+      text-decoration: none;
+      letter-spacing: 0.24em;
+      font-size: 11px;
+      text-transform: uppercase;
+      transition: background 0.3s, color 0.3s;
+    }
+    .btn:hover { background: var(--gold); color: #111; }
+    footer {
+      padding: 28px 40px 40px;
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      border-top: 1px solid var(--line);
+    }
+    body.locked { overflow: hidden; }
+    body.locked > *:not(#gate) { visibility: hidden; }
+    #gate {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: grid;
+      place-items: center;
+      background:
+        linear-gradient(180deg, rgba(7,7,7,0.55) 0%, #070707 100%),
+        url("https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2400&q=80") center/cover no-repeat;
+      padding: 40px 24px;
+    }
+    #gate.hidden { display: none; }
+    .gate-card { text-align: center; max-width: 420px; width: 100%; }
+    .gate-card h1 {
+      font-size: clamp(42px, 8vw, 72px);
+      margin-bottom: 12px;
+    }
+    .gate-card p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 36px;
+    }
+    .gate-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    #pw {
+      width: 180px;
+      background: transparent;
+      border: 0;
+      border-bottom: 1px solid var(--gold);
+      color: var(--ink);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 28px;
+      letter-spacing: 0.4em;
+      text-align: center;
+      padding: 8px 4px 12px;
+      outline: none;
+    }
+    #unlock {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold-2);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-size: 10px;
+      font-family: Outfit, sans-serif;
+      padding: 0 18px;
+      cursor: pointer;
+    }
+    #unlock:hover { background: var(--gold); color: #111; }
+    .gate-err {
+      height: 20px;
+      margin-top: 16px;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #c46a6a;
+      opacity: 0;
+    }
+    .gate-err.show { opacity: 1; }
+    @media (max-width: 860px) {
+      nav { padding: 18px 20px; }
+      .meta { grid-template-columns: 1fr 1fr; }
+      .meta article:nth-child(odd) { border-right: 1px solid var(--line); }
+      .timeline-wrap { padding: 90px 20px; }
+      .spine { left: 28px; }
+      .step, .step:nth-child(even), .step:nth-child(odd) {
+        grid-template-columns: 28px 1fr;
+        min-height: auto;
+        margin-bottom: 72px;
+      }
+      .node { grid-column: 1; grid-row: 1 / span 2; }
+      .copy, .step:nth-child(even) .copy, .step:nth-child(odd) .copy {
+        grid-column: 2;
+        text-align: left;
+      }
+      .visual, .step:nth-child(even) .visual, .step:nth-child(odd) .visual {
+        grid-column: 2;
+        grid-row: auto;
+        height: 220px;
+        margin-top: 18px;
+      }
+      .step:nth-child(odd) .copy p { margin-left: 0; }
+    }
+  </style>
 </head>
-<body>PLACEHOLDER</body>
+<body class="locked">
+  <div id="gate">
+    <div class="gate-card">
+      <div class="eyebrow">Private presentation</div>
+      <h1>Enter to view</h1>
+      <p>This listing brief is password protected.</p>
+      <form class="gate-row" id="gate-form" autocomplete="off">
+        <input id="pw" type="password" inputmode="numeric" maxlength="8" autofocus />
+        <button type="submit" id="unlock">Enter</button>
+      </form>
+      <div class="gate-err" id="gate-err">Incorrect code</div>
+    </div>
+  </div>
+  <nav>
+    <div class="brand">Atelier Listing</div>
+    <a class="nav-cta" href="#book">Request a presentation</a>
+  </nav>
+  <header class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+      <div class="eyebrow">Confidential listing presentation</div>
+      <h1>How we take<br />your home <em>to market.</em></h1>
+      <p>A vertical journey from first walkthrough to keys exchanged — designed, timed, and executed with the same care as the property itself.</p>
+    </div>
+    <div class="scroll-hint">Scroll the process</div>
+  </header>
+  <section class="meta">
+    <article><span>Typical window</span><strong>21–45 days</strong></article>
+    <article><span>Prep to launch</span><strong>10 days</strong></article>
+    <article><span>Buyer reach</span><strong>12 channels</strong></article>
+    <article><span>Close rate</span><strong>94%</strong></article>
+  </section>
+  <section class="timeline-wrap" id="process">
+    <div class="section-head">
+      <div class="eyebrow">The engagement</div>
+      <h2>Eight movements.<br />One sale.</h2>
+    </div>
+    <div class="spine"><div class="spine-fill" id="fill"></div></div>
+    <div class="steps">
+      <article class="step">
+        <div class="copy">
+          <div class="num">01 — Discovery</div>
+          <h3>Walk the rooms. Hear the house.</h3>
+          <p>We tour the property as a buyer would — light, flow, friction, and story. You leave with a written brief, not a pitch deck.</p>
+        </div>
+        <div class="node"></div>
+        <div class="visual">
+          <img src="https://images.unsplash.com/photo-1600585154340-0ef3c08c08be?auto=format&fit=crop&w=1400&q=80" alt="Interior walkthrough" />
+          <span class="tag">Day 0</span>
+        </div>
+      </article>
+      <article class="step">
+        <div class="copy">
+          <div class="num">02 — Strategy</div>
+          <h3>Price is a narrative.</h3>
+          <p>Comps, absorption, and positioning in one page. We set a number that invites competition without leaving money on the table.</p>
+        </div>
+        <div class="node"></div>
+        <div class="visual">
+          <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1400&q=80" alt="Pricing strategy" />
+          <span class="tag">Days 1–2</span>
+        </div>
+      </article>
+      <article class="step">
+        <div class="copy">
+          <div class="num">03 — Prepare</div>
+          <h3>Edit. Stage. Photograph.</h3>
+          <p>Trades, styling, dusk architecture, and a film stills package. The listing should feel inevitable before it is public.</p>
+        </div>
+        <div class="node"></div>
+        <div class="visual">
+          <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1400&q=80" alt="Staged interior" />
+          <span class="tag">Days 3–9</span>
+        </div>
+      </article>
+      <article class="step">
+        <div class="copy">
+          <div class="num">04 — Launch</div>
+          <h3>Quiet first. Then the world.</h3>
+          <p>Private preview for qualified buyers, then full MLS, portal, and social drop — timed to the hour, not the week.</p>
+        </div>
+        <div class="node"></div>
+        <div class="visual">
+          <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1400&q=80" alt="Home exterior at dusk" />
+          <span class="tag">Day 10</span>
+        </div>
+      </article>
+      <article class="step">
+        <div class="copy">
+          <div class="num">05 — Amplify</div>
+          <h3>Every surface is media.</h3>
+          <p>Print, paid, editorial placements, and agent-to-agent. We measure attention the way we measure offers — by quality.</p>
+        </div>
+        <div class="node"></div>
+        <div class="visual">
+          <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1400&q=80" alt="Keys and marketing" />
+          <span class="tag">Live campaign</span>
+        </div>
+      </article>
+      <article class="step">
+        <div class="copy">
+          <div class="num">06 — Show</div>
+          <h3>Controlled access.</h3>
+          <p>Broker tour, appointment-only showings, and a feedback loop the same evening. No open-house theater unless it serves the price.</p>
+        </div>
+        <div class="node"></div>
+        <div class="visual">
+          <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1400&q=80" alt="Gallery-like living space" />
+          <span class="tag">Week 2+</span>
+        </div>
+      </article>
+      <article class="step">
+        <div class="copy">
+          <div class="num">07 — Negotiate</div>
+          <h3>Terms over noise.</h3>
+          <p>We score every offer on certainty, timing, and net — then run a clean process until the best one is obvious.</p>
+        </div>
+        <div class="node"></div>
+        <div class="visual">
+          <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1400&q=80" alt="Contracts" />
+          <span class="tag">Offer window</span>
+        </div>
+      </article>
+      <article class="step">
+        <div class="copy">
+          <div class="num">08 — Close</div>
+          <h3>Quiet until the keys move.</h3>
+          <p>Escrow, inspections, appraisal, and a close calendar you can actually live with. After-sale: one last walkthrough together.</p>
+        </div>
+        <div class="node"></div>
+        <div class="visual">
+          <img src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdbc?auto=format&fit=crop&w=1400&q=80" alt="Completed home" />
+          <span class="tag">Keys</span>
+        </div>
+      </article>
+    </div>
+  </section>
+  <section class="cta" id="book">
+    <div class="eyebrow">Next</div>
+    <h2>Bring the house.<br /><em style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold-2)">We’ll bring the plan.</em></h2>
+    <p>A 45-minute listing presentation — on site or private salon. No obligation. No template.</p>
+    <a class="btn" href="mailto:hello@atelierlisting.com">Book the walkthrough</a>
+  </section>
+  <footer>
+    <span>Atelier Listing — 2026</span>
+    <span>Confidential</span>
+  </footer>
+  <script>
+    const KEY = "listing-gate";
+    const CODE = "3737";
+    const gate = document.getElementById("gate");
+    const form = document.getElementById("gate-form");
+    const pw = document.getElementById("pw");
+    const err = document.getElementById("gate-err");
+    function openPage() {
+      gate.classList.add("hidden");
+      document.body.classList.remove("locked");
+      sessionStorage.setItem(KEY, "1");
+    }
+    if (sessionStorage.getItem(KEY) === "1") openPage();
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (pw.value === CODE) {
+        openPage();
+      } else {
+        err.classList.add("show");
+        pw.value = "";
+        pw.focus();
+      }
+    });
+    const steps = [...document.querySelectorAll(".step")];
+    const fill = document.getElementById("fill");
+    const wrap = document.querySelector(".timeline-wrap");
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("on"); });
+    }, { threshold: 0.35 });
+    steps.forEach((s) => io.observe(s));
+    function progress() {
+      const rect = wrap.getBoundingClientRect();
+      const start = window.innerHeight * 0.45;
+      const total = wrap.offsetHeight - window.innerHeight * 0.6;
+      const raw = (start - rect.top) / total;
+      fill.style.height = Math.max(0, Math.min(1, raw)) * 100 + "%";
+    }
+    progress();
+    window.addEventListener("scroll", progress, { passive: true });
+    window.addEventListener("resize", progress);
+  </script>
+</body>
 </html>
